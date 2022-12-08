@@ -2,10 +2,10 @@
 # Main application interface
 ###
 
-# import the create app function 
-# that lives in src/__init__.py
-from src import create_app
-from flask import request
+# imports
+from src import create_app, db
+from flask import request, jsonify, make_response
+import json
 
 # create the app object
 app = create_app()
@@ -41,8 +41,8 @@ def add_event():
 
 @app.route("/clubs")
 def get_clubs():
-    cursor = .get_db().cursor()
-    query = 'select club_id as value, club_name as label from major'
+    cursor = db.get_db().cursor()
+    query = 'select clubId as value, club_name as label from Club'
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
