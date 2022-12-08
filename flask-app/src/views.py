@@ -33,3 +33,8 @@ def post_form():
    first_name = request.form['first']
    last_name = request.form['last']
    return f'<h1>Hello {first_name} {last_name}.</h1>'
+
+@app.route("/student", methods = ['POST'])
+def add_student():
+    current_app.logger.info(request.form)
+    return "hello"
