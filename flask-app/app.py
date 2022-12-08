@@ -5,6 +5,7 @@
 # import the create app function 
 # that lives in src/__init__.py
 from src import create_app
+from flask import request
 
 # create the app object
 app = create_app()
@@ -37,6 +38,21 @@ def post_form():
 def add_event():
     current_app.logger.info(request.form)
     return "hello"
+
+@app.route("/clubs")
+def get_clubs():
+    cursor = .get_db().cursor()
+    query = 'select club_id as value, club_name as label from major'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
 
 if __name__ == '__main__':
     # we want to run in debug mode (for hot reloading) 
