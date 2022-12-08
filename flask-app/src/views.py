@@ -10,7 +10,7 @@ def home():
 
 # This is a sample route for the /test URI.  
 # as above, it just returns a simple string. 
-@views.route('/test')
+@views.route('/calendar')
 def tester():
     return "<h1>this is a test!</h1>"
 
