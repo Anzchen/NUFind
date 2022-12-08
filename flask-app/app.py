@@ -16,6 +16,10 @@ if __name__ == '__main__':
     # what port this might be mapped to... 
     app.run(debug = True, host = '0.0.0.0', port = 4000)
 
+@app.route("/")
+def hello_world():
+    return f'<h1>Hello From NUFind app</h1>'
+
 @app.route("/form")
 def get_form():
     return """
