@@ -4,7 +4,7 @@
 
 # imports
 from src import create_app, db
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, current_app
 import json
 
 # create the app object
@@ -14,30 +14,20 @@ app = create_app()
 def hello_world():
     return f'<h1>Hello From NUFind app</h1>'
 
-@app.route("/form")
-def get_form():
-    return """
-    <h2>HTML Forms</h2>
-
-    <form action="/form" method="POST">
-    <label for="first">First name:</label><br>
-    <input type="text" id="first" name="first" value="John"><br>
-    <label for="last">Last name:</label><br>
-    <input type="text" id="last" name="last" value="Doe"><br><br>
-    <input type="submit" value="Submit">
-    </form> 
-    """
-
-@app.route("/form", methods = ['POST'])
-def post_form():
-   first_name = request.form['first']
-   last_name = request.form['last']
-   return f'<h1>Hello {first_name} {last_name}.</h1>'
-
 @app.route("/event", methods = ['POST'])
 def add_event():
     current_app.logger.info(request.form)
-    return "hello"
+    cursor = db.get_db().cursor()
+    eventID =  request.form['eventID']
+    desc = request.form['event_desc']
+    capcity = request.form['event_capacity']
+    fee = request.form['event_fee']
+    name = request.form['event_name']
+    time = request.form['event_time']
+    query = f'INSERT INTO Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) VALUES (\"{eventID}\", \"{desc}\", \"{capcity}\", \"{fee}\", \"{name}\", \"{time}\")'
+    cursor.execute(query)
+    db.get_db().commit()
+    return "Success"
 
 @app.route("/clubs")
 def get_clubs():

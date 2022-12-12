@@ -5,7 +5,7 @@ FLUSH PRIVILEGES;
 
 USE NUFind;
 
-CREATE TABLE Students (
+CREATE TABLE Students ( 
     nuid INT PRIMARY KEY NOT NULL,
     stu_fName VARCHAR(50) NOT NULL,
     stu_mName VARCHAR(50),
@@ -106,7 +106,7 @@ insert into Minor (minor_name, minor_ID, nuid) values ('Business', '302', '00886
 CREATE TABLE Staff (
     employeeID INT PRIMARY KEY NOT NULL,
     staff_name VARCHAR(50) NOT NULL,
-    date_hired date NOT NULL,
+    date_hired DATE NOT NULL,
     salary INT NOT NULL
 );
 
@@ -138,14 +138,13 @@ CREATE TABLE Events (
     event_desc VARCHAR(800),
     event_capacity INT NOT NULL,
     event_fee INT,
-    event_prize BOOLEAN NOT NULL,
     event_name VARCHAR(50) NOT NULL,
-    event_time TIME NOT NULL
+    event_time DATETIME NOT NULL
 );
 
-insert into Events (eventID, event_desc, event_capacity, event_fee, event_prize, event_name, event_time) values ('1654', 'Come have a chip party with ASU', '20', '10', FALSE, 'Chip Party', '18:30:00');
-insert into Events (eventID, event_desc, event_capacity, event_fee, event_prize, event_name, event_time) values ('1154', 'Learn Python with Disrupt and compete with students', '55', '0', TRUE, 'Python Competition', '17:00:00');
-insert into Events (eventID, event_desc, event_capacity, event_fee, event_prize, event_name, event_time) values ('1617', 'Network with panelist brought to you by WIF', '35', '0', FALSE, 'Finance Panelist', '17:30:00');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1654', 'Come have a chip party with ASU', '20', '10', 'Chip Party', '2023-10-8 18:30:00');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1154', 'Learn Python with Disrupt and compete with students', '55', '0', 'Python Competition', '2023-10-18 17:00:00');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1617', 'Network with panelist brought to you by WIF', '35', '0', 'Finance Panelist', '2023-09-27 17:30:00');
 
 CREATE TABLE Club (
     clubID INT PRIMARY KEY NOT NULL,
