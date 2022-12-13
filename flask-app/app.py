@@ -2,12 +2,113 @@
 # Main application interface
 ###
 
-# import the create app function 
-# that lives in src/__init__.py
-from src import create_app
+# imports
+from src import create_app, db
+from flask import request, jsonify, make_response, current_app
+import json
 
 # create the app object
 app = create_app()
+
+@app.route("/")
+def hello_world():
+    return f'<h1>Hello From NUFind app</h1>'
+
+@app.route("/event", methods = ['POST'])
+def add_event():
+    current_app.logger.info(request.form)
+    cursor = db.get_db().cursor()
+    desc = request.form['event_desc']
+    capcity = request.form['event_capacity']
+    fee = request.form['event_fee']
+    name = request.form['event_name']
+    time = request.form['event_time']
+    query = f'INSERT INTO Events (event_desc, event_capacity, event_fee, event_name, event_time) VALUES (\"{desc}\", \"{capcity}\", \"{fee}\", \"{name}\", \"{time}\")'
+    cursor.execute(query)
+    db.get_db().commit()
+    return "Success"
+
+@app.route("/elocation", methods = ['POST'])
+def add_elocation():
+    current_app.logger.info(request.form)
+    cursor = db.get_db().cursor()
+    event = cursor.execute(f'SELECT eventID FROM Events LIMIT 1')
+    # event = 1003
+    location = request.form['event_location']
+    query = f'INSERT INTO EventLocation (eventID, locationID) VALUES (\"{event}\", \"{location}\")'
+    cursor.execute(query)
+    db.get_db().commit()
+    return "Success"
+
+@app.route("/updateLocation", methods = ['POST'])
+def update_location():
+    current_app.logger.info(request.form)
+    cursor = db.get_db().cursor()
+    location = request.form['event_location']
+    query = f'update Locations, set loc_availability = FALSE where locationID = \"{location}\"'
+    cursor.execute(query)
+    db.get_db().commit()
+    return "Success"
+
+@app.route("/interests")
+def get_interests():
+    cursor = db.get_db().cursor()
+    query = 'select InterestID as value, interests as label from AreasOfInterest'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@app.route("/food")
+def get_food():
+    cursor = db.get_db().cursor()
+    query = 'select foodID as value, food_cuisine as label from Food'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@app.route("/location")
+def get_location():
+    cursor = db.get_db().cursor()
+    query = 'select locationID as value, loc_buildingName as label from Locations where loc_availability = TRUE'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@app.route("/clubs")
+def get_clubs():
+    cursor = db.get_db().cursor()
+    query = 'select clubID as value, club_name as label from Club'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
 
 if __name__ == '__main__':
     # we want to run in debug mode (for hot reloading) 
