@@ -29,10 +29,25 @@ def add_event():
     db.get_db().commit()
     return "Success"
 
+@app.route("/interests")
+def get_interests():
+    cursor = db.get_db().cursor()
+    query = 'select InterestID as value, interests as label from AreasOfInterest'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
 @app.route("/clubs")
 def get_clubs():
     cursor = db.get_db().cursor()
-    query = 'select clubId as value, club_name as label from Club'
+    query = 'select clubID as value, club_name as label from Club'
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
