@@ -1,3 +1,4 @@
+
 CREATE DATABASE NUFind;
 -- CREATE USER 'webapp'@'%' IDENTIFIED BY 'abc123';
 GRANT ALL PRIVILEGES ON NUFind.* to 'webapp'@'%';
@@ -30,6 +31,7 @@ insert into Students (nuid, stu_fName, stu_mName, stu_lName, stu_email, stu_phon
 insert into Students (nuid, stu_fName, stu_mName, stu_lName, stu_email, stu_phone, stu_year) values ('007019241', 'Kassi', NULL, 'MacCague', 'kmaccaguec@amazon.co.jp', 1109790982, 2);
 insert into Students (nuid, stu_fName, stu_mName, stu_lName, stu_email, stu_phone, stu_year) values ('007977895', 'Legra', NULL, 'Copnar', 'lcopnard@sohu.com', 4428765432, 2);
 insert into Students (nuid, stu_fName, stu_mName, stu_lName, stu_email, stu_phone, stu_year) values ('008865218', 'Raphael', NULL, 'Spatoni', 'rspatonie@sciencedirect.com', 2638009432, 5);
+
 
 CREATE TABLE Friends (
     nuid INT NOT NULL,
@@ -135,7 +137,7 @@ insert into Locations (locationID, loc_availability, loc_zip, loc_streetNum, loc
 insert into Locations (locationID, loc_availability, loc_zip, loc_streetNum, loc_streetName, loc_buildingName) values ('506', TRUE, '2115', '360', 'Huntington Ave', 'Snell Library');
 
 CREATE TABLE Events (
-    eventID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    eventID INT PRIMARY KEY NOT NULL,
     event_desc VARCHAR(800),
     event_capacity INT NOT NULL,
     event_fee INT,
@@ -143,27 +145,25 @@ CREATE TABLE Events (
     event_time DATETIME NOT NULL
 );
 
-Alter table Events AUTO_INCREMENT = 1000;
-insert into Events (event_desc, event_capacity, event_fee, event_name, event_time) values ('Come have a chip party with ASU', '20', '10', 'Chip Party', '2023-10-8 18:30:00');
-insert into Events (event_desc, event_capacity, event_fee, event_name, event_time) values ('Learn Python with Disrupt and compete with students', '55', '0', 'Python Competition', '2023-10-18 17:00:00');
-insert into Events (event_desc, event_capacity, event_fee, event_name, event_time) values ('Network with panelist brought to you by WIF', '35', '0', 'Finance Panelist', '2023-09-27 17:30:00');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1654', 'Come have a chip party with ASU', '20', '10', 'Chip Party', '2023-10-8 18:30:00');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1154', 'Learn Python with Disrupt and compete with students', '55', '0', 'Python Competition', '2023-10-18 17:00:00');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1617', 'Network with panelist brought to you by WIF', '35', '0', 'Finance Panelist', '2023-09-27 17:30:00');
 
 CREATE TABLE Club (
-    clubID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    clubID INT PRIMARY KEY NOT NULL,
     club_name VARCHAR(50) NOT NULL,
     club_email VARCHAR(50) NOT NULL,
     affiliated_college VARCHAR(50),
     budget INT
 );
 
-Alter table Club AUTO_INCREMENT = 900;
-insert into Club (club_name, club_email, affiliated_college, budget) values ('ASU', 'asu@northeastern.edu', NULL, 10000);
-insert into Club (club_name, club_email, affiliated_college, budget) values ('ASU', 'disrupt@northeastern.edu', 'D’Amore-McKim', 7000);
-insert into Club (club_name, club_email, affiliated_college, budget) values ('ASU', 'wif@northeastern.edu', 'D’Amore-McKim', 30000);
-insert into Club (club_name, club_email, affiliated_college, budget) values ('ASU', 'c4c@northeastern.edu', 'Khoury', 5000);
-insert into Club (club_name, club_email, affiliated_college, budget) values ('ASU', 'sandbox@northeastern.edu', 'Khoury', 5000);
-insert into Club (club_name, club_email, affiliated_college, budget) values ('ASU', 'electricracing@northeastern.edu', 'Khoury', 15000);
-insert into Club (club_name, club_email, affiliated_college, budget) values ('ASU', 'multi@northeastern.edu', 'Khoury', 3000);
+insert into Club (clubID, club_name, club_email, affiliated_college, budget) values ('900', 'ASU', 'asu@northeastern.edu', NULL, 10000);
+insert into Club (clubID, club_name, club_email, affiliated_college, budget) values ('901', 'Disrupt', 'disrupt@northeastern.edu', 'D’Amore-McKim', 7000);
+insert into Club (clubID, club_name, club_email, affiliated_college, budget) values ('902', 'WIF', 'wif@northeastern.edu', 'D’Amore-McKim', 30000);
+insert into Club (clubID, club_name, club_email, affiliated_college, budget) values ('903', 'C4C', 'c4c@northeastern.edu', 'Khoury', 5000);
+insert into Club (clubID, club_name, club_email, affiliated_college, budget) values ('904', 'Sandbox', 'sandbox@northeastern.edu', 'Khoury', 5000);
+insert into Club (clubID, club_name, club_email, affiliated_college, budget) values ('905', 'Electric Racing', 'electricracing@northeastern.edu', 'Khoury', 15000);
+insert into Club (clubID, club_name, club_email, affiliated_college, budget) values ('906', 'Multi', 'multi@northeastern.edu', 'Khoury', 3000);
 
 CREATE TABLE EventLocation (
     eventID INT NOT NULL,
@@ -172,9 +172,9 @@ CREATE TABLE EventLocation (
     CONSTRAINT eLocation_fk2 FOREIGN KEY (locationID) REFERENCES Locations(locationID)
 );
 
-insert into EventLocation (eventID, locationID) values ('1000', '500');
-insert into EventLocation (eventID, locationID) values ('1001', '501');
-insert into EventLocation (eventID, locationID) values ('1002', '502');
+insert into EventLocation (eventID, locationID) values ('1654', '500');
+insert into EventLocation (eventID, locationID) values ('1154', '501');
+insert into EventLocation (eventID, locationID) values ('1617', '502');
 
 CREATE TABLE EventClub (
     eventID INT NOT NULL,
@@ -183,9 +183,9 @@ CREATE TABLE EventClub (
     CONSTRAINT eClub_fk2 FOREIGN KEY (clubID) REFERENCES Club(clubID)
 );
 
-insert into EventClub (eventID, clubID) values ('1000', '900');
-insert into EventClub (eventID, clubID) values ('1001', '901');
-insert into EventClub (eventID, clubID) values ('1002', '902');
+insert into EventClub (eventID, clubID) values ('1654', '900');
+insert into EventClub (eventID, clubID) values ('1154', '901');
+insert into EventClub (eventID, clubID) values ('1617', '902');
 
 CREATE TABLE EventAttendees (
     nuid INT NOT NULL,
@@ -194,23 +194,21 @@ CREATE TABLE EventAttendees (
     CONSTRAINT eventsAttending_fk2 FOREIGN KEY (eventID) REFERENCES Events(eventID),
     PRIMARY KEY(eventID, nuid)
 );
-
-insert into EventAttendees (nuid, eventID) values ('001828751', '1000');
-insert into EventAttendees (nuid, eventID) values ('005204433', '1001');
-insert into EventAttendees (nuid, eventID) values ('007984483', '1002');
+insert into EventAttendees (nuid, eventID) values ('001828751', '1654');
+insert into EventAttendees (nuid, eventID) values ('005204433', '1154');
+insert into EventAttendees (nuid, eventID) values ('007984483', '1617');
 
 CREATE TABLE Food (
-    foodID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    foodID INT PRIMARY KEY NOT NULL,
     food_cuisine VARCHAR(50) NOT NULL,
     food_allergies VARCHAR(100)
 );
 
-Alter table Food AUTO_INCREMENT = 700;
-insert into Food (food_cuisine, food_allergies) values ('snacks', NULL);
-insert into Food (food_cuisine, food_allergies) values ('pizza', NULL);
-insert into Food (food_cuisine, food_allergies) values ('bowls', 'nuts');
-insert into Food (food_cuisine, food_allergies) values ('dessert', 'nuts');
-insert into Food (food_cuisine, food_allergies) values ('drink', 'milks');
+insert into Food (foodID, food_cuisine, food_allergies) values ('700', 'snacks', NULL);
+insert into Food (foodID, food_cuisine, food_allergies) values ('701', 'pizza', NULL);
+insert into Food (foodID, food_cuisine, food_allergies) values ('702', 'bowls', 'nuts');
+insert into Food (foodID, food_cuisine, food_allergies) values ('703', 'dessert', 'nuts');
+insert into Food (foodID, food_cuisine, food_allergies) values ('704', 'drink', 'milks');
 
 CREATE TABLE Catering (
     foodID INT NOT NULL,
@@ -219,19 +217,18 @@ CREATE TABLE Catering (
     CONSTRAINT catering_fk2 FOREIGN KEY (eventID) REFERENCES Events(EventID)
 );
 
-insert into Catering (foodID, eventID) values ('700', '1000');
-insert into Catering (foodID, eventID) values ('701', '1001');
-insert into Catering (foodID, eventID) values ('702', '1002');
+insert into Catering (foodID, eventID) values ('700', '1654');
+insert into Catering (foodID, eventID) values ('701', '1154');
+insert into Catering (foodID, eventID) values ('702', '1617');
 
 CREATE TABLE Billing (
-    billID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    billID INT PRIMARY KEY NOT NULL,
     datePaid DATE NOT NULL
 );
 
-Alter Table Billing AUTO_INCREMENT = 100;
-insert into Billing (datePaid) values ('2021-08-01');
-insert into Billing (datePaid) values ('2021-08-01');
-insert into Billing (datePaid) values ('2021-08-01');
+insert into Billing (billID, datePaid) values ('100', '2021-08-01');
+insert into Billing (billID, datePaid) values ('101', '2021-08-01');
+insert into Billing (billID, datePaid) values ('102', '2021-08-01');
 
 CREATE TABLE LocationCost (
     billID INT NOT NULL,
@@ -276,11 +273,9 @@ CREATE TABLE EventCost (
     CONSTRAINT eCost_fk1 FOREIGN KEY (eventID) REFERENCES Events(eventID),
     CONSTRAINT eCost_fk2 FOREIGN KEY (billID) REFERENCES Billing(billID)
 );
-
-insert into EventCost (billID, event_amount, eventID) values ('100', 250, '1000');
-insert into EventCost (billID, event_amount, eventID) values ('101', 300, '1001');
-insert into EventCost (billID, event_amount, eventID) values ('102', 100, '1002');
-
+insert into EventCost (billID, event_amount, eventID) values ('100', 250, '1654');
+insert into EventCost (billID, event_amount, eventID) values ('101', 300, '1154');
+insert into EventCost (billID, event_amount, eventID) values ('102', 100, '1617');
 CREATE TABLE Advisor (
     advisor_fName VARCHAR(50) NOT NULL,
     advisor_lName VARCHAR(50) NOT NULL,
@@ -296,23 +291,22 @@ insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('
 insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('Kim', 'Beno', '902', '600002');
 
 CREATE TABLE AreasOfInterest (
-    InterestID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    InterestID INT PRIMARY KEY NOT NULL,
     interests ENUM('political/social', 'religious', 'sports/active', 'gaming', 'engineering',
     'coding', 'cultural', 'volunteering', 'advising/tutoring', 'arts', 'global/international', 'other') NOT NULL
 );
-
-insert into AreasOfInterest (interests) values ('political/social');
-insert into AreasOfInterest (interests) values ('religious');
-insert into AreasOfInterest (interests) values ('sports/active');
-insert into AreasOfInterest (interests) values ('gaming');
-insert into AreasOfInterest (interests) values ('engineering');
-insert into AreasOfInterest (interests) values ('coding');
-insert into AreasOfInterest (interests) values ('cultural');
-insert into AreasOfInterest (interests) values ('volunteering');
-insert into AreasOfInterest (interests) values ('advising/tutoring');
-insert into AreasOfInterest (interests) values ('arts');
-insert into AreasOfInterest (interests) values ('global/international');
-insert into AreasOfInterest (interests) values ('other');
+insert into AreasOfInterest (InterestID, interests) values ('1', 'political/social');
+insert into AreasOfInterest (InterestID, interests) values ('2', 'religious');
+insert into AreasOfInterest (InterestID, interests) values ('3', 'sports/active');
+insert into AreasOfInterest (InterestID, interests) values ('4', 'gaming');
+insert into AreasOfInterest (InterestID, interests) values ('5', 'engineering');
+insert into AreasOfInterest (InterestID, interests) values ('6', 'coding');
+insert into AreasOfInterest (InterestID, interests) values ('7', 'cultural');
+insert into AreasOfInterest (InterestID, interests) values ('8', 'volunteering');
+insert into AreasOfInterest (InterestID, interests) values ('9', 'advising/tutoring');
+insert into AreasOfInterest (InterestID, interests) values ('10', 'arts');
+insert into AreasOfInterest (InterestID, interests) values ('11', 'global/international');
+insert into AreasOfInterest (InterestID, interests) values ('12', 'other');
 
 CREATE TABLE ClubInterests (
     clubID INT NOT NULL,
@@ -336,9 +330,9 @@ CREATE TABLE EventInterests (
     CONSTRAINT eInterests_fk2 FOREIGN KEY (interestID) REFERENCES AreasOfInterest(InterestID)
 );
 
-insert into EventInterests (eventID, interestID) values ('1000', '7');
-insert into EventInterests (eventID, interestID) values ('1001', '12');
-insert into EventInterests (eventID, interestID) values ('1002', '12');
+insert into EventInterests (eventID, interestID) values ('1654', '7');
+insert into EventInterests (eventID, interestID) values ('1154', '12');
+insert into EventInterests (eventID, interestID) values ('1617', '12');
 
 CREATE TABLE News (
     datePosted DATE NOT NULL,
@@ -353,22 +347,14 @@ insert into News (datePosted, priorities, clubID) values ('2022-10-20', TRUE, '9
 insert into News (datePosted, priorities, clubID) values ('2022-11-17', TRUE, '906');
 
 CREATE TABLE Applications (
-    ApplicationID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    ApplicationID INT PRIMARY KEY NOT NULL,
     app_names VARCHAR(50) NOT NULL,
     app_position VARCHAR(50) NOT NULL,
     app_email VARCHAR(50) NOT NULL
 );
-
-Alter table Applications AUTO_INCREMENT = 500;
-insert into Applications (app_names, app_position, app_email) values ('Gabrila Tivers', 'President', 'ftivers4@pen.io' );
-insert into Applications (app_names, app_position, app_email) values ('Adriaens Churchin', 'Treasurer', 'cchurchin5@bloglovin.com' );
-insert into Applications (app_names, app_position, app_email) values ('Elsworth Kelby', 'Operations', 'lkelby6@washingtonpost.com' );
-insert into Applications (app_names, app_position, app_email) values ('Robinette Filippone', 'General Member', 'dfilippone7@ihg.com' );
-
-CREATE TABLE Roles (
-    roleID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    roleName VARCHAR(50) NOT NULL
-);
+insert into Applications (ApplicationID, app_names, app_position, app_email) values ('501', 'Gabrila Tivers', 'President', 'ftivers4@pen.io' );
+insert into Applications (ApplicationID, app_names, app_position, app_email) values ('502', 'Adriaens Churchin', 'Treasurer', 'cchurchin5@bloglovin.com' );
+insert into Applications (ApplicationID, app_names, app_position, app_email) values ('503', 'Elsworth Kelby', 'Operations', 'lkelby6@washingtonpost.com' );
 
 Alter table Roles AUTO_INCREMENT = 10000;
 insert into Roles (roleName) values ('President');

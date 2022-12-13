@@ -14,16 +14,17 @@ app = create_app()
 def hello_world():
     return f'<h1>Hello From NUFind app</h1>'
 
-@app.route("/event", methods = ['POST'])
+@app.route("/add_event", methods = ['POST'])
 def add_event():
     current_app.logger.info(request.form)
     cursor = db.get_db().cursor()
+    eventID = request.form['eventID']
     desc = request.form['event_desc']
     capcity = request.form['event_capacity']
     fee = request.form['event_fee']
     name = request.form['event_name']
     time = request.form['event_time']
-    query = f'INSERT INTO Events (event_desc, event_capacity, event_fee, event_name, event_time) VALUES (\"{desc}\", \"{capcity}\", \"{fee}\", \"{name}\", \"{time}\")'
+    query = f'INSERT INTO Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) VALUES (\"{eventID}\", \"{desc}\", \"{capcity}\", \"{fee}\", \"{name}\", \"{time}\")'
     cursor.execute(query)
     db.get_db().commit()
     return "Success"
@@ -32,8 +33,9 @@ def add_event():
 def add_elocation():
     current_app.logger.info(request.form)
     cursor = db.get_db().cursor()
-    event = cursor.execute(f'SELECT eventID FROM Events LIMIT 1')
+    # event = cursor.execute(f'SELECT eventID FROM Events LIMIT 1')
     # event = 1003
+    event = request.form['eventID']
     location = request.form['event_location']
     query = f'INSERT INTO EventLocation (eventID, locationID) VALUES (\"{event}\", \"{location}\")'
     cursor.execute(query)
@@ -65,6 +67,40 @@ def get_interests():
     the_response.mimetype = 'application/json'
     return the_response
 
+@app.route("/events")
+def get_events():
+    cursor = db.get_db().cursor()
+    query = 'select * from Events natural join EventClub'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@app.route("/filteredEvents")
+def get_filteredEvents():
+    cursor = db.get_db().cursor()
+    date = request.form['event_date']
+    food = request.form['event_food']
+    type = request.form['event_location']
+
+    query = 'select * from Events natural join EventClub'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
 @app.route("/food")
 def get_food():
     cursor = db.get_db().cursor()
@@ -83,6 +119,7 @@ def get_food():
 @app.route("/location")
 def get_location():
     cursor = db.get_db().cursor()
+    location = request.form['event_location']
     query = 'select locationID as value, loc_buildingName as label from Locations where loc_availability = TRUE'
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
