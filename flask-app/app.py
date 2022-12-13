@@ -42,6 +42,17 @@ def add_elocation():
     db.get_db().commit()
     return "Success"
 
+@app.route("/eclub", methods = ['POST'])
+def add_eclub():
+    current_app.logger.info(request.form)
+    cursor = db.get_db().cursor()
+    event = request.form['eventID']
+    club = request.form['event_club']
+    query = f'INSERT INTO EventClub (eventID, clubID) VALUES (\"{event}\", \"{club}\")'
+    cursor.execute(query)
+    db.get_db().commit()
+    return "Success"
+
 @app.route("/updateLocation", methods = ['POST'])
 def update_location():
     current_app.logger.info(request.form)
@@ -88,8 +99,23 @@ def get_filteredEvents():
     date = request.form['event_date']
     food = request.form['event_food']
     type = request.form['event_location']
-
     query = 'select * from Events natural join EventClub'
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@app.route("/clubEvents", methods = ['GET'])
+def get_clubEvents():
+    cursor = db.get_db().cursor()
+    club = request.form['event_club']
+    query = 'select * from Events natural join EventClub where clubID =  \"{club}\"'
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
@@ -119,7 +145,6 @@ def get_food():
 @app.route("/location")
 def get_location():
     cursor = db.get_db().cursor()
-    location = request.form['event_location']
     query = 'select locationID as value, loc_buildingName as label from Locations where loc_availability = TRUE'
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
