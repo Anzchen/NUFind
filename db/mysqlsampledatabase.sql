@@ -115,8 +115,9 @@ CREATE TABLE Staff (
 insert into Staff (employeeID, staff_name, date_hired, salary) values ('600000', 'Ben Polo', '2003-08-01', '19000');
 insert into Staff (employeeID, staff_name, date_hired, salary) values ('600001', 'Larry Kim', '2002-08-01', '25000');
 insert into Staff (employeeID, staff_name, date_hired, salary) values ('600002', 'Kim Beno', '2019-07-01', '20000');
-insert into Staff (employeeID, staff_name, date_hired, salary) values ('600003', 'Nancy Peno', '2021-01-01', '23000');
-insert into Staff (employeeID, staff_name, date_hired, salary) values ('600005', 'Kevin Chen', '2019-12-22', '34000');
+insert into Staff (employeeID, staff_name, date_hired, salary) values ('600003', 'Mark Fontenot', '2021-01-01', '23000');
+insert into Staff (employeeID, staff_name, date_hired, salary) values ('600004', 'Vidoje Mihajlovikj', '2021-01-01', '23000');
+insert into Staff (employeeID, staff_name, date_hired, salary) values ('600005', 'Ben Lerner', '2019-12-22', '34000');
 
 CREATE TABLE Locations (
     locationID INT PRIMARY KEY NOT NULL,
@@ -142,12 +143,12 @@ CREATE TABLE Events (
     event_capacity INT NOT NULL,
     event_fee INT,
     event_name VARCHAR(50) NOT NULL,
-    event_time DATETIME NOT NULL
+    event_time DATE NOT NULL
 );
 
-insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1654', 'Come have a chip party with ASU', '20', '10', 'Chip Party', '2023-10-8 18:30:00');
-insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1154', 'Learn Python with Disrupt and compete with students', '55', '0', 'Python Competition', '2023-10-18 17:00:00');
-insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1617', 'Network with panelist brought to you by WIF', '35', '0', 'Finance Panelist', '2023-09-27 17:30:00');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1654', 'Come have a chip party with ASU at 18:30:00', '20', '10', 'Chip Party', '2023-10-8');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1154', 'Learn Python with Disrupt and compete with students at 17:00:00', '55', '0', 'Python Competition', '2023-10-18');
+insert into Events (eventID, event_desc, event_capacity, event_fee, event_name, event_time) values ('1617', 'Network with panelist brought to you by WIF at 17:30:00', '35', '0', 'Finance Panelist', '2023-09-27');
 
 CREATE TABLE Club (
     clubID INT PRIMARY KEY NOT NULL,
@@ -223,10 +224,10 @@ insert into Catering (foodID, eventID) values ('702', '1617');
 
 CREATE TABLE Billing (
     billID INT PRIMARY KEY NOT NULL,
-    datePaid DATE NOT NULL
+    datePaid DATE
 );
 
-insert into Billing (billID, datePaid) values ('100', '2021-08-01');
+insert into Billing (billID, datePaid) values ('100', NULL);
 insert into Billing (billID, datePaid) values ('101', '2021-08-01');
 insert into Billing (billID, datePaid) values ('102', '2021-08-01');
 
@@ -276,6 +277,7 @@ CREATE TABLE EventCost (
 insert into EventCost (billID, event_amount, eventID) values ('100', 250, '1654');
 insert into EventCost (billID, event_amount, eventID) values ('101', 300, '1154');
 insert into EventCost (billID, event_amount, eventID) values ('102', 100, '1617');
+
 CREATE TABLE Advisor (
     advisor_fName VARCHAR(50) NOT NULL,
     advisor_lName VARCHAR(50) NOT NULL,
@@ -289,6 +291,9 @@ CREATE TABLE Advisor (
 insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('Ben', 'Polo', '900', '600000');
 insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('Lary', 'Kim', '901', '600001');
 insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('Kim', 'Beno', '902', '600002');
+insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('Ben', 'Lerner', '903', '600005');
+insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('Mark', 'Fontenot', '904', '600003');
+insert into Advisor (advisor_fName, advisor_lName, clubID, employeeID) values ('Vidoje', 'Mihajlovikj', '905', '600004');
 
 CREATE TABLE AreasOfInterest (
     InterestID INT PRIMARY KEY NOT NULL,
@@ -352,19 +357,25 @@ CREATE TABLE Applications (
     app_position VARCHAR(50) NOT NULL,
     app_email VARCHAR(50) NOT NULL
 );
+
+insert into Applications (ApplicationID, app_names, app_position, app_email) values ('500', 'Robinette Filippone', 'General Member', 'dfilippone7@ihg.com' );
 insert into Applications (ApplicationID, app_names, app_position, app_email) values ('501', 'Gabrila Tivers', 'President', 'ftivers4@pen.io' );
 insert into Applications (ApplicationID, app_names, app_position, app_email) values ('502', 'Adriaens Churchin', 'Treasurer', 'cchurchin5@bloglovin.com' );
 insert into Applications (ApplicationID, app_names, app_position, app_email) values ('503', 'Elsworth Kelby', 'Operations', 'lkelby6@washingtonpost.com' );
 
-Alter table Roles AUTO_INCREMENT = 10000;
-insert into Roles (roleName) values ('President');
-insert into Roles (roleName) values ('Vice President');
-insert into Roles (roleName) values ('Treasurer');
-insert into Roles (roleName) values ('Secretary');
-insert into Roles (roleName) values ('Media Chair');
+CREATE TABLE Roles (
+    roleID INT PRIMARY KEY NOT NULL,
+    roleName VARCHAR(50) NOT NULL
+);
+
+insert into Roles (roleID, roleName) values ('0', 'President');
+insert into Roles (roleID, roleName) values ('1', 'Vice President');
+insert into Roles (roleID, roleName) values ('2', 'Treasurer');
+insert into Roles (roleID, roleName) values ('3', 'Secretary');
+insert into Roles (roleID, roleName) values ('4', 'Media Chair');
 
 CREATE TABLE Eboard (
-    eboardID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    eboardID INT PRIMARY KEY NOT NULL,
     responsibilities VARCHAR(800),
     nuid INT NOT NULL,
     clubID INT NOT NULL,
@@ -374,11 +385,10 @@ CREATE TABLE Eboard (
     CONSTRAINT eboard_fk3 FOREIGN KEY (roleID) REFERENCES Roles(roleID)
 );
 
-Alter table Eboard AUTO_INCREMENT = 100000;
-insert into Eboard (responsibilities, nuid, clubID, roleID) values ('manage social media', '008966095', '900', '10000');
-insert into Eboard (responsibilities, nuid, clubID, roleID) values ('help manage operations', '007019241', '901', '10001');
-insert into Eboard (responsibilities, nuid, clubID, roleID) values ('manage all operations', '007977895', '902', '10002');
-insert into Eboard (responsibilities, nuid, clubID, roleID) values ('manage the finances ', '008865218', '903', '10003');
+insert into Eboard (eboardID, responsibilities, nuid, clubID, roleID) values ('10000', 'manage social media', '008966095', '900', '0');
+insert into Eboard (eboardID, responsibilities, nuid, clubID, roleID) values ('10001', 'help manage operations', '007019241', '901', '1');
+insert into Eboard (eboardID, responsibilities, nuid, clubID, roleID) values ('10002', 'manage all operations', '007977895', '902', '2');
+insert into Eboard (eboardID, responsibilities, nuid, clubID, roleID) values ('10003', 'manage the finances ', '008865218', '903', '3');
 
 CREATE TABLE EboardApp (
     applicationID INT NOT NULL,
@@ -391,10 +401,10 @@ CREATE TABLE EboardApp (
     CONSTRAINT eApp_fk4 FOREIGN KEY (applicationID) REFERENCES Applications(ApplicationID)
 );
 
-insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('500', '009210841', '900', '10000' );
-insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('501', '007796386', '901', '10001' );
-insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('502', '004200317', '901', '10002' );
-insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('503', '002656470', '902', '10003' );
+insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('500', '009210841', '900', '0' );
+insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('501', '007796386', '901', '1' );
+insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('502', '004200317', '901', '2' );
+insert into EboardApp (ApplicationID, nuid, clubID, roleID) values ('503', '002656470', '902', '3' );
 
 CREATE TABLE ClubApp (
     applicationID INT NOT NULL,
@@ -411,14 +421,13 @@ insert into ClubApp (ApplicationID, nuid, clubID) values ('502', '004200317', '9
 insert into ClubApp (ApplicationID, nuid, clubID) values ('503', '002656470', '902');
 
 CREATE TABLE Access (
-    accID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    accID INT PRIMARY KEY NOT NULL,
     accName VARCHAR(50) NOT NULL
 );
 
-Alter table Access AUTO_INCREMENT = 1000000;
-insert into Access (accName) values ('Staff');
-insert into Access (accName) values ('Student');
-insert into Access (accName) values ('Eboard');
+insert into Access (accID, accName) values ('0','Staff');
+insert into Access (accID, accName) values ('1', 'Student');
+insert into Access (accID, accName) values ('2', 'Eboard');
 
 CREATE TABLE Account (
    acc_password VARCHAR(50) PRIMARY KEY NOT NULL,
@@ -426,26 +435,26 @@ CREATE TABLE Account (
    CONSTRAINT acc_fk1 FOREIGN KEY (acc_access) references Access(accID)
 );
 
-insert into Account (acc_password, acc_access) values ('papa123', '1000001');
-insert into Account (acc_password, acc_access) values ('asdkj2', '1000001');
-insert into Account (acc_password, acc_access) values ('sdank2', '1000001');
-insert into Account (acc_password, acc_access) values ('sdkew3', '1000001');
-insert into Account (acc_password, acc_access) values ('dekk4', '1000001');
-insert into Account (acc_password, acc_access) values ('huh49', '1000001');
-insert into Account (acc_password, acc_access) values ('fjk324', '1000001');
-insert into Account (acc_password, acc_access) values ('ewimlnu34', '1000001');
-insert into Account (acc_password, acc_access) values ('fsunk34', '1000001');
-insert into Account (acc_password, acc_access) values ('erku4', '1000001');
-insert into Account (acc_password, acc_access) values ('wiomn54', '1000001');
-insert into Account (acc_password, acc_access) values ('wi9nn8', '1000002');
-insert into Account (acc_password, acc_access) values ('daad23', '1000002');
-insert into Account (acc_password, acc_access) values ('egsr45', '1000002');
-insert into Account (acc_password, acc_access) values ('rkhnn8', '1000002');
-insert into Account (acc_password, acc_access) values ('fafakk34', '1000000');
-insert into Account (acc_password, acc_access) values ('Lardfjk3m', '1000000');
-insert into Account (acc_password, acc_access) values ('dad231do', '1000000');
-insert into Account (acc_password, acc_access) values ('Ndskk324', '1000000');
-insert into Account (acc_password, acc_access) values ('Kevfakjm34', '1000000');
+insert into Account (acc_password, acc_access) values ('papa123', '1');
+insert into Account (acc_password, acc_access) values ('asdkj2', '1');
+insert into Account (acc_password, acc_access) values ('sdank2', '1');
+insert into Account (acc_password, acc_access) values ('sdkew3', '1');
+insert into Account (acc_password, acc_access) values ('dekk4', '1');
+insert into Account (acc_password, acc_access) values ('huh49', '1');
+insert into Account (acc_password, acc_access) values ('fjk324', '1');
+insert into Account (acc_password, acc_access) values ('ewimlnu34', '1');
+insert into Account (acc_password, acc_access) values ('fsunk34', '1');
+insert into Account (acc_password, acc_access) values ('erku4', '1');
+insert into Account (acc_password, acc_access) values ('wiomn54', '1');
+insert into Account (acc_password, acc_access) values ('wi9nn8', '2');
+insert into Account (acc_password, acc_access) values ('daad23', '2');
+insert into Account (acc_password, acc_access) values ('egsr45', '2');
+insert into Account (acc_password, acc_access) values ('rkhnn8', '2');
+insert into Account (acc_password, acc_access) values ('fafakk34', '0');
+insert into Account (acc_password, acc_access) values ('Lardfjk3m', '0');
+insert into Account (acc_password, acc_access) values ('dad231do', '0');
+insert into Account (acc_password, acc_access) values ('Ndskk324', '0');
+insert into Account (acc_password, acc_access) values ('Kevfakjm34', '0');
 
 CREATE TABLE StudentAccount (
     user INT NOT NULL,
@@ -456,21 +465,21 @@ CREATE TABLE StudentAccount (
     CONSTRAINT stuAcc_fk3 FOREIGN KEY (acc_access) REFERENCES Access(accID)
 );
 
-insert into StudentAccount (user, stu_pass, acc_access) values ('001828751', 'papa123', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('005204433', 'asdkj2', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('007984483', 'sdank2', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('009143208', 'sdkew3', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('009210841', 'dekk4', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('007796386', 'huh49', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('004200317', 'fjk324', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('002656470', 'ewimlnu34', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('001283376', 'fsunk34', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('001279000', 'erku4', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('001235247', 'wiomn54', '1000001');
-insert into StudentAccount (user, stu_pass, acc_access) values ('008966095', 'wi9nn8', '1000002');
-insert into StudentAccount (user, stu_pass, acc_access) values ('007019241', 'daad23', '1000002');
-insert into StudentAccount (user, stu_pass, acc_access) values ('007977895', 'egsr45', '1000002');
-insert into StudentAccount (user, stu_pass, acc_access) values ('008865218', 'rkhnn8', '1000002');
+insert into StudentAccount (user, stu_pass, acc_access) values ('001828751', 'papa123', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('005204433', 'asdkj2', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('007984483', 'sdank2', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('009143208', 'sdkew3', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('009210841', 'dekk4', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('007796386', 'huh49', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('004200317', 'fjk324', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('002656470', 'ewimlnu34', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('001283376', 'fsunk34', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('001279000', 'erku4', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('001235247', 'wiomn54', '1');
+insert into StudentAccount (user, stu_pass, acc_access) values ('008966095', 'wi9nn8', '2');
+insert into StudentAccount (user, stu_pass, acc_access) values ('007019241', 'daad23', '2');
+insert into StudentAccount (user, stu_pass, acc_access) values ('007977895', 'egsr45', '2');
+insert into StudentAccount (user, stu_pass, acc_access) values ('008865218', 'rkhnn8', '2');
 
 CREATE TABLE StaffAccount (
    user INT NOT NULL,
@@ -481,11 +490,11 @@ CREATE TABLE StaffAccount (
    CONSTRAINT staAcc_fk3 FOREIGN KEY (acc_access) REFERENCES Access(accID)
 );
 
-insert into StaffAccount (user, staff_pass, acc_access) values ('600000', 'fafakk34', '1000000');
-insert into StaffAccount (user, staff_pass, acc_access) values ('600001', 'Lardfjk3m', '1000000');
-insert into StaffAccount (user, staff_pass, acc_access) values ('600002', 'dad231do', '1000000');
-insert into StaffAccount (user, staff_pass, acc_access) values ('600003', 'Ndskk324', '1000000');
-insert into StaffAccount (user, staff_pass, acc_access) values ('600005', 'Kevfakjm34', '1000000');
+insert into StaffAccount (user, staff_pass, acc_access) values ('600000', 'fafakk34', '0');
+insert into StaffAccount (user, staff_pass, acc_access) values ('600001', 'Lardfjk3m', '0');
+insert into StaffAccount (user, staff_pass, acc_access) values ('600002', 'dad231do', '0');
+insert into StaffAccount (user, staff_pass, acc_access) values ('600003', 'Ndskk324', '0');
+insert into StaffAccount (user, staff_pass, acc_access) values ('600005', 'Kevfakjm34', '0');
 
 
 SHOW TABLES
